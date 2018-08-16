@@ -22,6 +22,8 @@ set(VIPLNET_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 # add_definitions(-D__VIPL_LOG__)
 
 include_directories(${VIPLNET_INCLUDE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/../FaceDetection/include)
+include_directories(${PROJECT_SOURCE_DIR}/../FaceAlignment/include)
 include_directories(${VIPLNET_SRC_DIR})
 
 add_subdirectory(src)
@@ -29,6 +31,8 @@ add_subdirectory(src)
 aux_source_directory(./src SRC_LIST)
 aux_source_directory(./tools TOOLS_LIST)
 add_library(viplnet SHARED ${SRC_LIST} ${TOOLS_LIST})
+link_libraries(${PROJECT_SOURCE_DIR}/../FaceDetection/build/libseeta_facedet_lib.so)
+link_libraries(${PROJECT_SOURCE_DIR}/../FaceAlignment/build/libseeta_fa_lib.so)
 set_target_properties(viplnet PROPERTIES 
   VERSION ${VIPLNET_VERSION_MAJOR}.${VIPLNET_VERSION_MINOR} 
   SOVERSION ${VIPLNET_VERSION_MAJOR}.${VIPLNET_VERSION_MINOR}) 

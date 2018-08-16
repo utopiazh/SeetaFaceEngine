@@ -35,7 +35,12 @@
 #include <string>
 
 #include "cv.h"
-#include "highgui.h"
+//#include "highgui.h"
+//#include "imgproc.h"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
+
 
 #include "face_detection.h"
 #include "face_alignment.h"
@@ -44,31 +49,46 @@
 std::string DATA_DIR = "../../data/";
 std::string MODEL_DIR = "../../model/";
 #else
-std::string DATA_DIR = "./data/";
-std::string MODEL_DIR = "./model/";
+std::string DATA_DIR = "../data/";
+std::string MODEL_DIR = "../model/";
 #endif
+
+using namespace std;
 
 int main(int argc, char** argv)
 {
+  if (argc < 3) {
+      cout << "Usage: " << argv[0]
+          << " model_path image_path"
+          << endl;
+      cout << "Example: " <<endl;
+      cout << " ./fa_test ../model/seeta_fa_v1.1.bin ../data/image_0001.png"
+           << endl;
+      return -1;
+  }
+  std::string image_path = argv[2];
+  std::string model_path = argv[1];
+ 
   // Initialize face detection model
-  seeta::FaceDetection detector("../../../FaceDetection/model/seeta_fd_frontal_v1.0.bin");
+  seeta::FaceDetection detector("../../FaceDetection/model/seeta_fd_frontal_v1.0.bin");
   detector.SetMinFaceSize(40);
   detector.SetScoreThresh(2.f);
   detector.SetImagePyramidScaleFactor(0.8f);
   detector.SetWindowStep(4, 4);
 
   // Initialize face alignment model 
-  seeta::FaceAlignment point_detector((MODEL_DIR + "seeta_fa_v1.1.bin").c_str());
+  // seeta::FaceAlignment point_detector((MODEL_DIR + "seeta_fa_v1.1.bin").c_str());
+  seeta::FaceAlignment point_detector(model_path.c_str());
 
   //load image
   IplImage *img_grayscale = NULL;
-  img_grayscale = cvLoadImage((DATA_DIR + "image_0001.png").c_str(), 0);
+  img_grayscale = cvLoadImage(image_path.c_str(), 0);
   if (img_grayscale == NULL)
   {
     return 0;
   }
 
-  IplImage *img_color = cvLoadImage((DATA_DIR + "image_0001.png").c_str(), 1);
+  IplImage *img_color = cvLoadImage(image_path.c_str(), 1);
   int pts_num = 5;
   int im_width = img_grayscale->width;
   int im_height = img_grayscale->height;
@@ -110,7 +130,8 @@ int main(int argc, char** argv)
   {
     cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
   }
-  cvSaveImage("result.jpg", img_color);
+  cvSaveImage((image_path + "-result.jpg").c_str(), img_color);
+
 
   // Release memory
   cvReleaseImage(&img_color);

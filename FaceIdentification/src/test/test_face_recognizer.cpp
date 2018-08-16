@@ -90,8 +90,8 @@ using namespace seeta;
 std::string DATA_DIR = "../../data/";
 std::string MODEL_DIR = "../../model/";
 #else
-std::string DATA_DIR = "./data/";
-std::string MODEL_DIR = "./model/";
+std::string DATA_DIR = "../../../data/";
+std::string MODEL_DIR = "../../../model/";
 #endif
 void TEST(FaceRecognizerTest, CropFace) {
   FaceIdentification face_recognizer((MODEL_DIR + "seeta_fr_v1.0.bin").c_str());

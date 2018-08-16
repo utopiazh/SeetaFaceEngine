@@ -33,6 +33,7 @@
 #include "cfan.h"
 #include <string.h>
 #include <algorithm>
+using namespace std;
 /** A constructor.
   *  Initialize basic parameters.
   */

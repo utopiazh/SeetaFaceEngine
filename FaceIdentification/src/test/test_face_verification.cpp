@@ -85,8 +85,8 @@ using namespace seeta;
 std::string DATA_DIR = "../../data/";
 std::string MODEL_DIR = "../../model/";
 #else
-std::string DATA_DIR = "./data/";
-std::string MODEL_DIR = "./model/";
+std::string DATA_DIR = "../../../data/";
+std::string MODEL_DIR = "../../../model/";
 #endif
 
 
